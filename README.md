@@ -64,15 +64,21 @@ class User extends Authenticatable
 
 ### Usage
 
-#### Audit Columns
-
-You **must** insert the `$auditColumns` property on your model to track audits.
-
 ###### Simple log
 
 ```php
 \pierresilva\Auditable\Auditable::log('User try to log in.');
 ```
+
+##### Get latest simple logs
+
+```php
+$logs = \pierresilva\Auditable\Auditable::latestSimpleLogs(100);
+```
+
+#### Audit Columns
+
+You **must** insert the `$auditColumns` property on your model to track audits.
 
 ###### Tracking All Columns
 
@@ -141,6 +147,12 @@ return view('user.show', ['user' => $user]);
 ```
 
 On each audit record, you can use the following methods to display the revised data:
+
+##### Get latest audits
+
+```php
+$logs = \pierresilva\Auditable\Auditable::latestAudits(100);
+```
 
 ###### getUserResponsible()
 

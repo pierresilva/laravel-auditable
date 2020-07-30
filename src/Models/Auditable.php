@@ -72,4 +72,17 @@ class Auditable extends Model
             ->orderBy('created_at', 'DESC')
             ->get();
     }
+
+    /**
+     * @param int $quantity
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public static function latestAudits($quantity = 100)
+    {
+        return self::with('user')
+            ->where('auditable_type', '<>', null)
+            ->limit($quantity)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+    }
 }

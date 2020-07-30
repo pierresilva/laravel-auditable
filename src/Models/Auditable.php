@@ -17,7 +17,7 @@ class Auditable extends Model
     protected $table = 'auditable_log';
 
     protected $fillable = [
-        'key'
+        'key', 'user_id'
     ];
 
     /**
@@ -55,7 +55,21 @@ class Auditable extends Model
     public static function log($value)
     {
         self::create([
-            'key' => $value
+            'key' => $value,
+            'user_id' => auth()->user()->id ?? null
         ]);
+    }
+
+    /**
+     * @param int $quantity
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public static function latestSimpleLogs($quantity = 100)
+    {
+        return self::with('user')
+            ->where('auditable_type', null)
+            ->limit($quantity)
+            ->orderBy('created_at', 'DESC')
+            ->get();
     }
 }

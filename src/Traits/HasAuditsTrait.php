@@ -69,14 +69,8 @@ trait HasAuditsTrait
         if ($this->isDirty()) {
             array_map(function ($column) {
                 if ($this->isDirty($column)) {
-                    $this->olds[] = [
-                        'column' => $column,
-                        'value' => $this->getOriginal($column)
-                    ];
-                    $this->news[] = [
-                        'column' => $column,
-                        'value' => $this->getAttribute($column)
-                    ];
+                    $this->olds[$column] = $this->getOriginal($column);
+                    $this->news[$column] = $this->getAttribute($column);
                 }
             }, $this->getAuditColumns());
 
@@ -101,14 +95,8 @@ trait HasAuditsTrait
         if ($this->isDirty()) {
             array_map(function ($column) {
                 if ($this->isDirty($column)) {
-                    $this->olds[] = [
-                        'column' => $column,
-                        'value' => $this->getOriginal($column)
-                    ];
-                    $this->news[] = [
-                        'column' => $column,
-                        'value' => $this->getAttribute($column)
-                    ];
+                    $this->olds[$column] = $this->getOriginal($column);
+                    $this->news[$column] = $this->getAttribute($column);
                 }
             }, $this->getAuditColumns());
 
@@ -120,14 +108,8 @@ trait HasAuditsTrait
         } else {
 
             array_map(function ($column) {
-                $this->olds[] = [
-                    'column' => $column,
-                    'value' => $this->getOriginal($column)
-                ];
-                $this->news[] = [
-                    'column' => $column,
-                    'value' => $this->getAttribute($column)
-                ];
+                $this->olds[$column] = $this->getOriginal($column);
+                $this->news[$column] = $this->getAttribute($column);
             }, $this->getAuditColumns());
 
             $this->processCreateAuditRecord(
@@ -151,14 +133,8 @@ trait HasAuditsTrait
         if ($this->isDirty()) {
             array_map(function ($column) {
                 if ($this->isDirty($column)) {
-                    $this->olds[] = [
-                        'column' => $column,
-                        'value' => $this->getOriginal($column)
-                    ];
-                    $this->news[] = [
-                        'column' => $column,
-                        'value' => $this->getAttribute($column)
-                    ];
+                    $this->olds[$column] = $this->getOriginal($column);
+                    $this->news[$column] = $this->getAttribute($column);
                 }
             }, $this->getAuditColumns());
 

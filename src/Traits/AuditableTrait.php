@@ -38,7 +38,7 @@ trait AuditableTrait
      *
      * @return string
      */
-    public function getColumnName()
+    public function getMessageKey()
     {
         $model = $this->auditable;
 

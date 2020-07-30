@@ -16,6 +16,10 @@ class Auditable extends Model
      */
     protected $table = 'auditable_log';
 
+    protected $fillable = [
+        'key'
+    ];
+
     /**
      * The belongs to user relationship.
      *
@@ -27,13 +31,31 @@ class Auditable extends Model
     }
 
 
+    /**
+     * @param $value
+     * @return mixed
+     */
     public function getOldValueAttribute($value)
     {
         return json_decode($value);
     }
 
+    /**
+     * @param $value
+     * @return mixed
+     */
     public function getNewValueAttribute($value)
     {
         return json_decode($value);
+    }
+
+    /**
+     * @param $value
+     */
+    public static function log($value)
+    {
+        self::create([
+            'key' => $value
+        ]);
     }
 }

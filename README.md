@@ -26,37 +26,6 @@ You're all set!
 
 ### Setup
 
-Create the `Auditable` model and insert the `belongsTo()` or `hasOne()` `user()` relationship as well as the `AuditableTrait`:
-
-```php
-namespace App;
-
-use Illuminate\Database\Eloquent\Model;
-use pierresilva\Auditable\Traits\AuditableTrait;
-
-class Auditable extends Model
-{
-    use AuditableTrait;
-    
-    /**
-     * The revisions table.
-     *
-     * @var string
-     */
-    protected $table = 'auditable_log';
-    
-    /**
-     * The belongs to user relationship.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(\App\User::class);
-    }
-}
-```
-
 Insert the `pierresilva\Auditable\Traits\HasAuditsTrait` onto your
 model that you'd like to track changes on:
 
@@ -76,9 +45,9 @@ class User extends Authenticatable
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function revisions()
+    public function audits()
     {
-        return $this->morphMany(\App\Auditable::class, 'auditable');
+        return $this->morphMany(\pierresilva\Auditable\Models\Auditable::class, 'auditable');
     }
     
     /**
@@ -86,7 +55,7 @@ class User extends Authenticatable
      *
      * @return int|string
      */
-    public function revisionUserId()
+    public function auditUserId()
     {
         return auth()->id();
     }
@@ -98,6 +67,12 @@ class User extends Authenticatable
 #### Audit Columns
 
 You **must** insert the `$auditColumns` property on your model to track audits.
+
+###### Simple log
+
+```php
+\pierresilva\Auditable\Auditable::log('User try to log in.');
+```
 
 ###### Tracking All Columns
 
@@ -150,13 +125,13 @@ To save a personalized message key do it as fallows
 ```php
     $user = User::findOrFail($userId);
     $user->auditKey = 'User edited by ' . auth()->user()->name;
-    $user->name = $user->name . ' updated';
+    $user->name = $request->get('username');
     $user->save();
 ```
 
-#### Displaying Audits
+#### Get Audits
 
-To display your audits on a record, call the relationship accessor `audits`. Remember, this is just
+To get your audits on a record, call the relationship accessor `audits`. Remember, this is just
 a regular Laravel relationship, so you can eager load / lazy load your revisions as you please:
 
 ```php
@@ -166,16 +141,6 @@ return view('user.show', ['user' => $user]);
 ```
 
 On each audit record, you can use the following methods to display the revised data:
-
-###### getColumnName()
-
-To display the column name that the revision took place on, use the method `getColumnName()`:
-
-```php
-$audit = Auditable::find(1);
-
-echo $audit->getColumnName(); // Returns string
-```
 
 ###### getUserResponsible()
 
@@ -223,7 +188,7 @@ echo $audit->getNewValue(); // Returns string
         <thead>
             <tr>
                 <th>User Responsible</th>
-                <th>Changed</th>
+                <th>Message</th>
                 <th>From</th>
                 <th>To</th>
                 <th>On</th>
@@ -242,17 +207,17 @@ echo $audit->getNewValue(); // Returns string
                     {{ $audit->getUserResponsible()->last_name }}
                 </td>
                 
-                <td>{{ $audit->getColumnName() }}</td>
+                <td>{{ $audit->key() }}</td>
                 
                 <td>
-                    @if(is_null($audit->getOldValue()))
+                    @if(is_null($audit->old_value))
                         <em>None</em>
                     @else
-                        {{ $audit->getOldValue() }}
+                        {{ $audit->old_value }}
                     @endif
                 </td>
                 
-                <td>{{ $audit->getNewValue() }}</td>
+                <td>{{ $audit->new_value }}</td>
                 
                 <td>{{ $audit->created_at }}</td>
                 

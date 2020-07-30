@@ -1,0 +1,30 @@
+{
+    "name": "pierresilva/laravel-auditable",
+    "description": "Audit for Eloquent Models.",
+    "tags": ["revision", "audit", "laravel", "history", "tracking"],
+    "authors": [
+        {
+            "name": "Pierre Silva",
+            "email": "pierremichelsilva@gmail.com"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.2.5",
+        "illuminate/support": "7.*",
+        "illuminate/database": "7.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "pierresilva\\Auditable\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "pierresilva\\Auditable\\AuditableServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev"
+}

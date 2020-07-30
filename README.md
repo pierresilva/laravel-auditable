@@ -1,4 +1,4 @@
-## Revision
+## Laravel Auditable
 
 Easily track any changes to an eloquent model.
 
@@ -141,6 +141,17 @@ class User extends Authenticatable
         'description',
     ];
 }
+```
+
+#### Set message audit key
+
+To save a personalized message key do it as fallows
+
+```php
+    $user = User::findOrFail($userId);
+    $user->auditKey = 'User edited by ' . auth()->user()->name;
+    $user->name = $user->name . ' updated';
+    $user->save();
 ```
 
 #### Displaying Audits

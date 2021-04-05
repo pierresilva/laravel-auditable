@@ -1,6 +1,6 @@
 <?php
 
-namespace pierresilva\Auditable;
+namespace pierresilva\Auditable\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use pierresilva\Auditable\Traits\AuditableTrait;
